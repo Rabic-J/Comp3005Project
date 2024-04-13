@@ -1,0 +1,94 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  user_email varchar [primary key]
+  first_name      varchar
+  last_name       varchar
+  account_type    varchar
+  sex             varchar
+  password        varchar
+  signup_date     date
+}
+
+table fitness_goals
+	{
+        goal_id         serial [primary key]
+        user_email      varchar
+        goal            text
+        start_date      date
+        completion_date date
+	 }
+
+table exercise_routines
+	{
+        routine_id         serial [primary key]
+        user_email      varchar
+        routine            text
+        start_date      date
+	}
+
+table health_metrics
+	{
+    metric_id       serial [primary key]
+    user_email      varchar
+    weight          decimal
+    height          decimal
+    heart_rate      int
+    bmi             decimal
+    input_date      date 
+	}
+table session
+	{
+        session_id      serial [primary key]
+        user_email      varchar
+        max_size        int
+        date            date
+        start_time      time
+        end_time        time
+        room_num        int
+        cost            decimal
+}
+
+table session_members
+	{
+    session_members_id      serial [primary key]
+    session_id  int
+    user_email              varchar
+    paid                    boolean
+
+	}
+
+table equipment
+	{
+        equipment_id serial [primary key]
+        name  varchar
+        open                  boolean
+        room_num                    int
+	}
+
+  table room
+	{
+        room_num int [primary key]
+        Name            varchar    
+	}
+
+table equipment_maintenance{
+        equipment_maintenance_id   serial
+        equipment_id  integer
+        comments                  text
+        date date
+        user_email      varchar
+        }
+Ref: fitness_goals.user_email > users.user_email // many-to-one
+Ref: health_metrics.user_email > users.user_email // many-to-one
+Ref: exercise_routines.user_email > users.user_email // many-to-one
+Ref: session.user_email > users.user_email // many-to-one
+Ref: session_members.user_email > users.user_email // many-to-one
+Ref: session_members.session_id > session.session_id // many-to-one
+Ref: equipment.room_num > room.room_num // many-to-one
+Ref: session.room_num > room.room_num // many-to-one
+
+
+Ref: equipment_maintenance.equipment_id > equipment.equipment_id  // many-to-one
+Ref: equipment_maintenance.user_email > users.user_email // many-to-one
